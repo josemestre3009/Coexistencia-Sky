@@ -14,7 +14,11 @@ services:
   app:
     build: .
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-coexistencia}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-coexistencia}
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: ${POSTGRES_DB:-coexistencia}
+      PGUSER: ${POSTGRES_USER:-coexistencia}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
       APP_ENCRYPTION_KEY: ${APP_ENCRYPTION_KEY}
       ADMIN_EMAIL: ${ADMIN_EMAIL}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
