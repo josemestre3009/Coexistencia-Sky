@@ -28,7 +28,7 @@ export default function MetaSignup({ appId, configId, version, invitationToken }
       const response = await fetch("/api/meta/connect", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ invitationToken, code: code.current, ...signup.current }) });
       const result = await response.json() as { error?: string };
       if (!response.ok) throw new Error(result.error || "No fue posible guardar la conexión.");
-      router.replace(`/conectar/${invitationToken}/resultado?status=success`);
+      router.replace("/confirmacion");
     } catch (cause) {
       submitted.current = false;
       setBusy(false);
