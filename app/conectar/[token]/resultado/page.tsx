@@ -1,0 +1,1 @@
+export default function Result() { return <main className="shell"><nav className="nav"><a className="brand" href="/">Coexistencia Sky</a></nav><section className="card"><h1>Proceso iniciado</h1><p>Completa la ventana de Meta. El administrador revisará el estado de la conexión.</p></section></main>; }

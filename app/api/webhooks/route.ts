@@ -1,0 +1,5 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
+import { db } from "@/lib/db";
+
+export async function GET(request: Request) { const url=new URL(request.url); if(url.searchParams.get("hub.mode")==="subscribe"&&url.searchParams.get("hub.verify_token")===process.env.FB_VERIFY_TOKEN) return new Response(url.searchParams.get("hub.challenge")??"",{status:200}); return new Response("Forbidden",{status:403}); }
+export async function POST(request: Request) { const raw=await request.text(); const signature=request.headers.get("x-hub-signature-256") ?? ""; const secret=process.env.FB_APP_SECRET; if(!secret) return new Response("Meta not configured",{status:503}); const expected=`sha256=${createHmac("sha256",secret).update(raw).digest("hex")}`; if(signature.length!==expected.length||!timingSafeEqual(Buffer.from(signature),Buffer.from(expected))) return new Response("Invalid signature",{status:401}); const payload=JSON.parse(raw) as {entry?:Array<{id?:string}>}; await db.query("INSERT INTO webhook_events(event_id,payload) VALUES($1,$2) ON CONFLICT(event_id) DO NOTHING",[payload.entry?.[0]?.id ?? null,raw]); return new Response("EVENT_RECEIVED"); }

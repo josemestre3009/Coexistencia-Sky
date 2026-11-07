@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: coexistencia
+      POSTGRES_USER: coexistencia
+      POSTGRES_PASSWORD: change-me
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U coexistencia]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  app:
+    build: .
+    env_file: .env
+    depends_on:
+      postgres: {condition: service_healthy}
+    ports: ["3000:3000"]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+volumes:
+  postgres_data:
