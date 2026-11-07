@@ -2,9 +2,9 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: coexistencia
-      POSTGRES_USER: coexistencia
-      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: ${POSTGRES_DB:-coexistencia}
+      POSTGRES_USER: ${POSTGRES_USER:-coexistencia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes: [postgres_data:/var/lib/postgresql/data]
     healthcheck:
       test: [CMD-SHELL, pg_isready -U coexistencia]
@@ -13,7 +13,18 @@ services:
       retries: 10
   app:
     build: .
-    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-coexistencia}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-coexistencia}
+      APP_ENCRYPTION_KEY: ${APP_ENCRYPTION_KEY}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      APP_URL: ${APP_URL}
+      FB_APP_ID: ${FB_APP_ID}
+      FB_APP_SECRET: ${FB_APP_SECRET}
+      FB_CONFIG_ID: ${FB_CONFIG_ID}
+      FB_GRAPH_API_VERSION: ${FB_GRAPH_API_VERSION:-v22.0}
+      FB_VERIFY_TOKEN: ${FB_VERIFY_TOKEN}
+      FB_REG_PIN: ${FB_REG_PIN}
     depends_on:
       postgres: {condition: service_healthy}
     ports: ["3000:3000"]
