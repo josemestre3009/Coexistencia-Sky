@@ -25,6 +25,10 @@ button:hover, .button:hover { background: var(--forest-dark); transform: transla
 button.secondary, .button.secondary { color: var(--ink); background: #edf1eb; box-shadow: none; }
 button.ghost, .button.ghost { color: var(--forest); background: transparent; border: 1px solid var(--line); box-shadow: none; }
 button.danger { background: #fff0ed; color: var(--danger); box-shadow: none; }
+button:disabled { cursor: wait; opacity: .72; transform: none; box-shadow: none; }
+.spinner { width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.4); border-top-color: currentColor; border-radius: 50%; animation: spin .7s linear infinite; }
+button.danger .spinner { border-color: rgba(168,59,51,.25); border-top-color: currentColor; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .shell { width: min(1180px, calc(100% - 40px)); margin: auto; }
 .nav { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
@@ -146,6 +150,20 @@ textarea { min-height: 115px; resize: vertical; }
 .client-hero { padding: 32px; color: white; background: var(--forest); border-radius: 20px; position: relative; overflow: hidden; }
 .client-hero::after { content: ""; position: absolute; width: 160px; height: 160px; right: -40px; top: -65px; border-radius: 50%; background: var(--lime); opacity: .18; }
 .client-hero h1 { margin: 6px 0 8px; font: 800 34px "Manrope"; letter-spacing: -1.5px; }
+.invitation-panel { margin-top: 18px; padding: 22px 24px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; color: var(--ink); background: var(--lime-soft); border: 1px solid #d3ea91; border-radius: 17px; }
+.invitation-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; color: var(--lime); background: var(--forest); }
+.invitation-icon svg { width: 23px; height: 23px; }
+.invitation-copy .eyebrow { font-size: 10px; }
+.invitation-copy h2 { margin: 3px 0 2px; font: 750 18px "Manrope"; letter-spacing: -.5px; }
+.invitation-copy p { margin: 0; color: var(--muted); font-size: 13px; }
+.invitation-actions { display: flex; gap: 9px; }
+.invitation-actions .copied { color: var(--forest); background: white; box-shadow: inset 0 0 0 1px #bcd875; }
+.skeleton { overflow: hidden; position: relative; background: #e6e9e2; border-radius: 12px; }
+.skeleton::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent); transform: translateX(-100%); animation: shimmer 1.3s infinite; }
+.skeleton-line { height: 18px; margin: 8px 0 35px; }.skeleton-line.short { width: 150px; }
+.skeleton-hero { height: 190px; border-radius: 20px; }
+.skeleton-card { height: 270px; margin-top: 18px; }
+@keyframes shimmer { to { transform: translateX(100%); } }
 .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
 .meta-list { display: grid; gap: 13px; margin-top: 18px; }
 .meta-row { display: flex; justify-content: space-between; gap: 20px; padding-bottom: 11px; border-bottom: 1px solid #edf0eb; }
@@ -187,6 +205,8 @@ textarea { min-height: 115px; resize: vertical; }
   .metric-card { min-height: 125px; padding: 17px; }
   .metric-value { margin-top: 15px; }
   .form-grid, .detail-grid { grid-template-columns: 1fr; }
+  .invitation-panel { grid-template-columns: auto 1fr; }
+  .invitation-actions { grid-column: 1 / -1; }
   .login-art { display: none; }
   .login-panel { min-height: 100vh; padding: 30px 20px; }
   .connect-card { padding: 26px 22px; }
@@ -195,4 +215,7 @@ textarea { min-height: 115px; resize: vertical; }
   .metric-grid { grid-template-columns: 1fr; }
   .hero-actions { align-items: stretch; flex-direction: column; }
   .hero-actions .button { width: 100%; }
+  .invitation-panel { grid-template-columns: 1fr; }
+  .invitation-icon { display: none; }
+  .invitation-actions { display: grid; }
 }
